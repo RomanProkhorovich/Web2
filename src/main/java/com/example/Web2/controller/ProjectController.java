@@ -46,7 +46,7 @@ public class ProjectController {
     }
 
     @GetMapping("/notEnded")
-    public ResponseEntity<Map<Long,Long>> getMap(){
+    public ResponseEntity<Map<Long, Long>> getMap(){
         return ResponseEntity.ok(service.getCountAndId());
     }
 //TODO Добавить возможность получить информацию о количестве незакрытых задач во всех проектах.

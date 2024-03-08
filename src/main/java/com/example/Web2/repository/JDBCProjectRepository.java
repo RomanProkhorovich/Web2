@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 @Transactional
@@ -19,4 +20,10 @@ public interface JDBCProjectRepository extends JpaRepository<Project,Long> {
             "or upper(t.description) like upper(concat('%', :query ,'%'))")
     List<Project> filter (@Param("query") String query);
 
+    @Query( "select pr.id as id, " +
+            "(select count(*) " +
+            " from Task t where t.isEnded = false" +
+            " and t.project.id=pr.id ) as count " +
+            "from Project pr")
+    List<Map<String, Object>> getMap();
 }

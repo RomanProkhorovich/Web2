@@ -4,16 +4,22 @@ import com.example.Web2.exception.EntityNotFoundException;
 import com.example.Web2.model.Project;
 import com.example.Web2.repository.JDBCProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProjectService {
     @Autowired
     private JDBCProjectRepository repository;
+    @Autowired
+    private MessageSource messageSource;
 
     public Project create(Project project) {
         return repository.save(project);
@@ -31,7 +37,11 @@ public class ProjectService {
     }
 
     public Project findById(Long id) {
-        return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        messageSource.getMessage("project.notFound.byId",
+                                new Object[]{id},
+                                Locale.ROOT)));
     }
 
     public void delete(Long projectId) {
@@ -48,12 +58,11 @@ public class ProjectService {
 
 
     public Map<Long, Long> getCountAndId() {
-        return findAll().stream()
-                .collect(Collectors.toMap(
-                        Project::getId,
-                        y -> y.getTasks().stream()
-                                .filter(z -> !z.getIsEnded())
-                                .count())
-                );
+        var a = repository.getMap();
+        Map<Long, Long> collect = a.stream()
+                .collect(
+                        Collectors.toMap(x -> (Long)(x.get("id")),
+                                x -> (Long)(x.get("count"))));
+        return collect;
     }
 }

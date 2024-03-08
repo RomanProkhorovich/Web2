@@ -26,6 +26,10 @@ public class TaskService {
         return repository.save(task);
     }
 
+    public List<Task> findByProject(Long id){
+        return repository.findByProjectId(id);
+    }
+
 
     public Task update(Task task, Long id) {
         task.setId(id);
@@ -34,5 +38,9 @@ public class TaskService {
 
     public void delete(Long id){
         repository.deleteById(id);
+    }
+
+    public void deleteByProject(Long projectId){
+        repository.deleteEndedByProjectId(projectId);
     }
 }
