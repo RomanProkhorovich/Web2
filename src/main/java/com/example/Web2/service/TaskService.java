@@ -1,7 +1,5 @@
 package com.example.Web2.service;
 
-import com.example.Web2.exception.EntityNotFoundException;
-import com.example.Web2.model.Project;
 import com.example.Web2.model.Task;
 import com.example.Web2.repository.JDBCTaskRepository;
 import lombok.AllArgsConstructor;
@@ -40,7 +38,7 @@ public class TaskService {
         repository.deleteById(id);
     }
 
-    public void deleteByProject(Long projectId){
+    public void deleteClosedByProject(Long projectId){
         repository.deleteEndedByProjectId(projectId);
     }
 }
