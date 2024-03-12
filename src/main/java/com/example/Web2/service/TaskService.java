@@ -34,6 +34,10 @@ public class TaskService {
         return repository.save(task);
     }
 
+    public void delete(Long projectId, Long taskId){
+        repository.deleteProjectIdAndTaskId(projectId,taskId);
+    }
+
     public void delete(Long id){
         repository.deleteById(id);
     }

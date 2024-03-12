@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ProjectService {
@@ -23,12 +21,6 @@ public class ProjectService {
 
     public Project create(Project project) {
         return repository.save(project);
-      /*  try {
-            return repository.insert(project);
-        }
-        catch (DataAccessException ex){
-            throw new RuntimeException(ex.getMessage());
-        }*/
     }
 
     public Project update(Project project, Long projectId) {
@@ -41,7 +33,8 @@ public class ProjectService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         messageSource.getMessage("project.notFound.byId",
                                 new Object[]{id},
-                                Locale.ROOT)));
+                                Locale.ROOT),
+                        id));
     }
 
     public void delete(Long projectId) {
@@ -61,8 +54,8 @@ public class ProjectService {
         var a = repository.getMap();
         Map<Long, Long> collect = a.stream()
                 .collect(
-                        Collectors.toMap(x -> (Long)(x.get("id")),
-                                x -> (Long)(x.get("count"))));
+                        Collectors.toMap(x -> (Long) (x.get("id")),
+                                x -> (Long) (x.get("count"))));
         return collect;
     }
 }

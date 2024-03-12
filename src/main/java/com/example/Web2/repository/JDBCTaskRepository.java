@@ -14,6 +14,10 @@ public interface JDBCTaskRepository extends JpaRepository<Task, Long> {
     @Query("from Task t where t.project.id = ?1 and t.id = ?2")
     Task findByProjectIdAndTaskId(Long projectId, Long id);
 
+    @Modifying
+    @Query("delete from Task t where t.project.id = ?1 and t.id = ?2")
+    Task deleteProjectIdAndTaskId(Long projectId, Long id);
+
     @Query("from Task t where t.project.id = ?1")
     List<Task> findByProjectId(Long projectId);
 

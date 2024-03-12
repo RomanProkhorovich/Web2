@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,5 +40,15 @@ public class ProjectDto {
                 .name(task.getName())
                 .build();
         return dto;
+    }
+
+    public static List<ProjectDto> of(List<Project> task) {
+        return task.stream()
+                .map(ProjectDto::of)
+                .collect(Collectors.toList());
+    }
+
+    public Project toProject(){
+
     }
 }
